@@ -43,11 +43,7 @@ Thank you to everyone who has contributed to Stellar Wave Hub! Add yourself belo
 
 Replace `YOUR_GITHUB_USERNAME`, `Your Name`, `YOUR_X_HANDLE`, and the role/projects line. List all the projects you contributed (comma-separated). Remove the X badge if you don't have one.
 
-**Example:**
 
-```
-<sub>Researcher — StellarPay, LumenSwap, AquaDEX</sub>
-```
 
 ## Contributors List
 
