@@ -3,73 +3,58 @@ import {
   Entity, 
   PrimaryGeneratedColumn, 
   Column, 
-  CreateDateColumn, 
-  UpdateDateColumn, 
-  DeleteDateColumn,
   OneToMany,
-  OneToOne,
-  Index
+  OneToOne
 } from 'typeorm';
 import { Product } from '../entity';
 import { Wallet } from '../entity';
+import { Order } from '../';
+import { Review } from '../';
 
-export enum UserRole {
-  CUSTOMER = 'CUSTOMER',
-  CAR_OWNER = 'CAR_OWNER',
-  ADMIN = 'ADMIN',
-  CEO = 'CEO'
-}
 
-@Entity('users')
+@Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string; //had to learn that uuid is alphanumeric lol could have use autoincreasing number but i feel it would be troublesome if a user is deleted and the list breaks or something
+  @PrimaryGeneratedColumn("uuid")
+  user_id: string;
 
-  @Index({ unique: true }) // Blazing fast login lookups
-  @Column({ type: 'varchar', unique: true })
-  email!: string;
+  @Column()
+  role: "Farmer" | "Buyer";
 
-  @Column({ type: 'varchar', nullable: true })
-  password?: string;
+  @Column()
+  business_name: string;
 
-  @Column({ type: 'varchar' })
-  fullName!: string;
-
-  @Column({ type: 'varchar', nullable: true })
-  securityQuestion?: string; //  "What was the name of your first pet?"
-
-  @Column({ type: 'varchar', nullable: true })
-  securityAnswerHash?: string; // Hashed answer for secure comparison
-
-  @Index() // Speeds up CEO/Admin analytics filters by role
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.CUSTOMER })
-  role!: UserRole;
+  @Column()
+  name: string;
   
-  @Column({ type: 'boolean', default: true })
-  isActive!: boolean; // False when suspended
-
-  @Column({ type: 'timestamp', nullable: true })
-  suspendedAt?: Date; // Tracks exactly when they were suspended
-
-  @Column({ type: 'boolean', default: false })
-  isVerified!: boolean;
-
-  @Column({ type: 'varchar', nullable: true })
-  profileImage?: string;
-
-  @CreateDateColumn()
-  createdAt!: Date;
-
-  @UpdateDateColumn()
-  updatedAt?: Date;
-
-  @DeleteDateColumn() //Logic for soft delete
-  deletedAt?: Date;
-
-  // Relations
-  @OneToOne(() => Wallet, (wallet) => wallet.user, { cascade: true })
-  wallet!: Wallet;
+  @Column()
+  phone: string;
   
-  @OneToMany(() => Vehicle, (vehicle) => vehicle.owner)
-  vehicles?: Vehicle[];
+  @Column()
+  pasword_hash: string;
+
+  @Column()
+  location: string;
+
+  // Farmer- only payout fields - nullable for Buyer
+  @Column({ nullable: true })
+  account_number: string;
+  
+  @Column({ nullable: true })
+  account_name: string;
+  
+  @Column({ nullable: true })
+  bank_name?: string;
+
+  //One farmer creates many products
+  @OneToMany(() => Product, (product) => product.farmer)
+  products: Product[];
+  
+  //One buyer places many products
+  @OneToMany(() => Order, (order) => order.buyer)
+  orders: Order[];
+  
+  //One user writes many reviews
+  @OneToMany(() => Review, (review) => review.author)
+  reviews: Review[];
+
 }
