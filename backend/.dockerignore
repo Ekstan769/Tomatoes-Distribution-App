@@ -1,0 +1,8 @@
+node_modules
+.pnpm-store
+dist
+.git
+.env
+# Documentation folders
+dbdoc
+schema_report
