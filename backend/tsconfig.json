@@ -1,0 +1,19 @@
+//Suggested tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2022",                         /* Modern JavaScript features for backend */
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,                    /* Smooth compatibility with older npm packages */
+    "sourceMap": true,                          /* Keeps your original line numbers in Docker logs */
+    "outDir": "./dist",                          /* Compiles files here */
+    "rootDir": "src",                           /* Prevents nested 'build/src' folders */
+    "forceConsistentCasingInFileNames": true,  /* Prevents case-sensitivity crashes in Docker */
+    "skipLibCheck": true                        /* Fast container compilation speeds */
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "build"]
+}
