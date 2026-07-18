@@ -1,0 +1,46 @@
+﻿fieldName,csvType,typeScriptType,suggestedDatabaseType,role,definition,exampleOrAllowedValues,classificationModelUse
+transactionId,string,string,VARCHAR(30),Identifier,Unique transaction ID.,TXN-2026-000001,No
+farmerId,string,string,VARCHAR(20),Identifier,Synthetic farmer ID.,FRM-754,No
+logisticsId,string,string,VARCHAR(20),Identifier,Synthetic logistics-provider ID.,LOG-24,No
+shipmentDatetime,ISO 8601 datetime,string / Date,TIMESTAMP,Time,Combined shipment date and time.,2026-01-13T16:30:00,No
+shipmentDate,ISO date,string / Date,DATE,Time,Shipment calendar date.,2026-01-13,Optional
+shipmentTime,ISO time,string,TIME,Time,Shipment time in 24-hour format.,16:30:00,Optional
+dataSource,string,string,VARCHAR(40),Metadata,Identifies synthetic prototype records.,Synthetic prototype,No
+generatorVersion,string,string,VARCHAR(15),Metadata,Generator version.,1.0.0,No
+origin,string,string,VARCHAR(60),Location,Original composite origin label retained for compatibility.,Kano (Yankaba),No
+originState,categorical string,string,VARCHAR(30),Location,Origin state.,Kano,Optional
+originCity,categorical string,string,VARCHAR(40),Location,Origin city.,Kano,Yes
+originHub,categorical string,string,VARCHAR(50),Location,"Specific loading hub, or N/A.",Yankaba,No
+destination,string,string,VARCHAR(70),Location,Original composite destination label retained for compatibility.,Lagos (Mile 12),No
+destinationState,categorical string,string,VARCHAR(30),Location,Destination state.,Lagos,Optional
+destinationCity,categorical string,string,VARCHAR(40),Location,Destination city.,Lagos,Yes
+destinationMarket,categorical string,string,VARCHAR(60),Location,"Specific market, or N/A.",Mile 12,No
+season,categorical string,string,VARCHAR(20),Feature,Dry or rainy season.,Dry Season / Rainy Season,Yes
+routeDistanceKm,float,number,"DECIMAL(8,1)",Feature,Approximate route distance in kilometres.,790.7,Yes
+quantitySentCrates,integer,number,INTEGER,Feature,Number of crates dispatched.,85,Yes
+averageCrateWeightKg,float,number,"DECIMAL(5,1)",Analytics,Average crate weight in kilograms.,26.4,No
+quantitySentKg,float,number,"DECIMAL(10,1)",Analytics,Estimated shipment weight.,2244.0,No
+pricePerCrateNgn,integer,number,BIGINT,Analytics,Synthetic price per crate.,10356,No
+packagingType,categorical string,string,VARCHAR(30),Feature,Packaging type.,Plastic Crate,Yes
+transportMode,categorical string,string,VARCHAR(40),Feature,Transport mode.,Covered Truck,Yes
+roadCondition,categorical string,string,VARCHAR(15),Feature,Road condition.,Good / Fair / Poor,Yes
+checkpointDelayHours,float,number,"DECIMAL(5,1)",Operational outcome,Checkpoint or roadside delay.,2.0,No for pre-dispatch model
+vehicleBreakdown,categorical string,string,VARCHAR(5),Operational outcome,Whether a breakdown occurred.,Yes / No,No for pre-dispatch model
+coldStorageAvailable,categorical string,string,VARCHAR(5),Feature,Whether cold storage is available.,Yes / No,Yes
+storageType,categorical string,string,VARCHAR(30),Feature,Storage method.,Cold Storage,Yes
+hoursSinceHarvestAtDispatch,float,number,"DECIMAL(6,1)",Feature,Hours from harvest to dispatch.,25.0,Yes
+storageDelayHours,float,number,"DECIMAL(6,1)",Feature,Delay before storage.,0.5,Yes
+ripenessLevel,categorical string,string,VARCHAR(20),Feature,Ripeness at dispatch.,Overripe,Yes
+initialDamageLevel,categorical string,string,VARCHAR(20),Feature,Initial physical-damage level.,Low,Yes
+handlingQuality,categorical string,string,VARCHAR(15),Feature,Loading and handling quality.,Fair,Yes
+humidityPercent,float,number,"DECIMAL(5,1)",Feature,Relative humidity percentage.,55.6,Yes
+transitTimeHours,float,number,"DECIMAL(6,1)",Feature,Estimated transit duration.,22.4,Yes
+averageTemperatureC,float,number,"DECIMAL(5,1)",Feature,Average shipment temperature in Celsius.,33.7,Yes
+spoilageStatus,integer (0/1),number,SMALLINT / BOOLEAN,Classification target,1 = spoiled; 0 = not spoiled.,0,Target
+spoilageStatusLabel,categorical string,string,VARCHAR(20),Derived target,Readable label derived from spoilageStatus.,Not Spoiled,No
+spoilageRatePercent,float,number,"DECIMAL(5,1)",Outcome,Estimated percentage spoiled.,6.5,Regression target only
+quantitySpoiledCrates,integer,number,INTEGER,Outcome,Crates spoiled.,6,No
+quantityDeliveredCrates,integer,number,INTEGER,Outcome,Crates delivered.,79,No
+potentialRevenueNgn,integer,number,BIGINT,Outcome,Potential shipment revenue.,880260,No
+deliveredRevenueNgn,integer,number,BIGINT,Outcome,Revenue represented by delivered crates.,818124,No
+financialLossNgn,integer,number,BIGINT,Outcome,Financial value of spoiled crates.,62136,No

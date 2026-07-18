@@ -1,0 +1,98 @@
+{
+    "endpoint": "/api/v1/predict-spoilage",
+    "method": "POST",
+    "modelVersion": "1.0.0",
+    "requestExample": {
+        "originState": "Gombe",
+        "destinationCity": "Ibadan",
+        "season": "Dry Season",
+        "routeDistanceKm": 850.0,
+        "quantitySentCrates": 120,
+        "packagingType": "Plastic Crate",
+        "transportMode": "Covered Truck",
+        "coldStorageAvailable": "No",
+        "storageType": "Cold Storage",
+        "hoursSinceHarvestAtDispatch": 6.0,
+        "ripenessLevel": "Overripe",
+        "initialDamageLevel": "Low"
+    },
+    "responseExample": {
+        "spoilageProbability": 0.68,
+        "predictedSpoilageStatus": 1,
+        "riskLevel": "high",
+        "recommendedAction": "Prioritise dispatch and reduce storage delay.",
+        "decisionThreshold": 0.46,
+        "modelVersion": "1.0.0"
+    },
+    "modelInputFields": [
+        "originState",
+        "destinationCity",
+        "season",
+        "packagingType",
+        "transportMode",
+        "coldStorageAvailable",
+        "storageType",
+        "ripenessLevel",
+        "initialDamageLevel",
+        "routeDistanceKm",
+        "quantitySentCrates",
+        "hoursSinceHarvestAtDispatch"
+    ],
+    "validCategories": {
+        "originState": [
+            "Gombe",
+            "Kaduna",
+            "Kano",
+            "Plateau"
+        ],
+        "destinationCity": [
+            "Ibadan",
+            "Lagos",
+            "Onitsha",
+            "Port Harcourt"
+        ],
+        "season": [
+            "Dry Season",
+            "Rainy Season"
+        ],
+        "packagingType": [
+            "Plastic Crate",
+            "Raffia Basket",
+            "Sack",
+            "Wooden Crate"
+        ],
+        "transportMode": [
+            "Covered Truck",
+            "Refrigerated Reefer Van",
+            "Traditional Open Truck"
+        ],
+        "coldStorageAvailable": [
+            "No",
+            "Yes"
+        ],
+        "storageType": [
+            "Cold Storage",
+            "No Storage",
+            "Open Storage",
+            "Shaded Storage"
+        ],
+        "ripenessLevel": [
+            "Overripe",
+            "Ripe",
+            "Semi-ripe",
+            "Unripe"
+        ],
+        "initialDamageLevel": [
+            "Low",
+            "Moderate",
+            "None",
+            "Severe"
+        ]
+    },
+    "notes": {
+        "destinationCity": "Derived by the TypeScript backend from the destination market selected by the farmer.",
+        "season": "Derived automatically from the harvest date.",
+        "routeDistanceKm": "Obtained from the route lookup table using the selected origin and destination.",
+        "hoursSinceHarvestAtDispatch": "Calculated from the harvest date and time and the dispatch or submission time."
+    }
+}

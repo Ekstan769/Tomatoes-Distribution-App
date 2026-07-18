@@ -1,0 +1,125 @@
+{
+    "modelName": "Farm2Market Tomato Spoilage Risk Model",
+    "modelVersion": "1.0.0",
+    "algorithm": "Logistic Regression",
+    "targetVariable": "spoilageStatus",
+    "classLabels": {
+        "0": "notSpoiled",
+        "1": "spoiled"
+    },
+    "decisionThreshold": 0.46,
+    "modelFeatures": [
+        "originState",
+        "destinationCity",
+        "season",
+        "packagingType",
+        "transportMode",
+        "coldStorageAvailable",
+        "storageType",
+        "ripenessLevel",
+        "initialDamageLevel",
+        "routeDistanceKm",
+        "quantitySentCrates",
+        "hoursSinceHarvestAtDispatch"
+    ],
+    "categoricalFeatures": [
+        "originState",
+        "destinationCity",
+        "season",
+        "packagingType",
+        "transportMode",
+        "coldStorageAvailable",
+        "storageType",
+        "ripenessLevel",
+        "initialDamageLevel"
+    ],
+    "numericalFeatures": [
+        "routeDistanceKm",
+        "quantitySentCrates",
+        "hoursSinceHarvestAtDispatch"
+    ],
+    "validCategories": {
+        "originState": [
+            "Gombe",
+            "Kaduna",
+            "Kano",
+            "Plateau"
+        ],
+        "destinationCity": [
+            "Ibadan",
+            "Lagos",
+            "Onitsha",
+            "Port Harcourt"
+        ],
+        "season": [
+            "Dry Season",
+            "Rainy Season"
+        ],
+        "packagingType": [
+            "Plastic Crate",
+            "Raffia Basket",
+            "Sack",
+            "Wooden Crate"
+        ],
+        "transportMode": [
+            "Covered Truck",
+            "Refrigerated Reefer Van",
+            "Traditional Open Truck"
+        ],
+        "coldStorageAvailable": [
+            "No",
+            "Yes"
+        ],
+        "storageType": [
+            "Cold Storage",
+            "No Storage",
+            "Open Storage",
+            "Shaded Storage"
+        ],
+        "ripenessLevel": [
+            "Overripe",
+            "Ripe",
+            "Semi-ripe",
+            "Unripe"
+        ],
+        "initialDamageLevel": [
+            "Low",
+            "Moderate",
+            "None",
+            "Severe"
+        ]
+    },
+    "farmerFormFields": [
+        "harvestDate",
+        "harvestTime",
+        "originState",
+        "destinationMarket",
+        "quantitySentCrates",
+        "packagingType",
+        "transportMode",
+        "coldStorageAvailable",
+        "storageType",
+        "ripenessLevel",
+        "initialDamageLevel"
+    ],
+    "backendDerivedFields": [
+        "destinationCity",
+        "season",
+        "routeDistanceKm",
+        "hoursSinceHarvestAtDispatch"
+    ],
+    "testMetrics": {
+        "accuracy": 0.6595,
+        "precisionSpoiled": 0.4818,
+        "recallSpoiled": 0.7593,
+        "f1Spoiled": 0.5895,
+        "rocAuc": 0.7688
+    },
+    "testConfusionMatrix": {
+        "trueNegatives": 830,
+        "falsePositives": 526,
+        "falseNegatives": 155,
+        "truePositives": 489
+    },
+    "dataNotice": "The model was trained using synthetic data for prototype development. Its results are not field-validated performance estimates for Nigerian tomato shipments."
+}
