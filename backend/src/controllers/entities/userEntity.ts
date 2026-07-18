@@ -4,13 +4,19 @@ import {
   PrimaryGeneratedColumn, 
   Column, 
   OneToMany,
-  OneToOne
+  OneToOne,
+  Index
 } from 'typeorm';
 import { Product } from '../entity';
 import { Wallet } from '../entity';
 //import { Order } from '../entity';
 import { Review } from '../entity';
 
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  BUYER = 'BUYER',
+  FARMER = 'FARMER'
+}
 
 @Entity()
 export class User {
@@ -25,12 +31,21 @@ export class User {
 
   @Column()
   userName!: string;
-  
+
+  @Index({ unique: true })
   @Column()
   phoneNumber!: string;
   
+  @Index()
   @Column()
-  pasword!: string;
+  securityQuestion?: string;
+
+  @Index()
+  @Column()
+  securityAnswer?: string;
+
+  @Column()
+  password!: string;
 
   @Column()
   location?: string[];
