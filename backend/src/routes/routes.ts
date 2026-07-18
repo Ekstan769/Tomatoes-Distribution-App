@@ -1,15 +1,39 @@
 import { Router } from 'express';
-import { productCtrl } from '../controllers/control';
-// Assuming you have some sort of JWT middleware
-// import { authMiddleware } from '../utils/authMiddleware';
+import adminRouter from './adminRouter';
 
-const router = Router();
+// Auth Middleware
+import { isAuthenticated,
+  verifySecurityAnswer
+ } from '../validators/auth'; 
 
-// Define product routes
-router.get('/products', productCtrl.getProducts);
+// Controllers
+import { 
+  authCtrl, 
+  
+} from '../controllers/control'; 
 
-// Use authMiddleware to populate req.user from JWT
-// router.post('/products/:productId/reviews', authMiddleware, productCtrl.addReview);
-router.post('/products/:productId/reviews', productCtrl.addReview);
 
-export default router;
+const apiRouter = Router();
+
+// Route Discovery
+apiRouter.get('/routes', routes);
+
+
+// AUTHENTICATION & RECOVERY
+
+apiRouter.post('/auth/register', authCtrl.signUp);
+apiRouter.post('/auth/login', authCtrl.signIn);
+
+// Password Recovery Flow
+apiRouter.post('/auth/forgot-password/get-question', authCtrl.getRecoveryQuestion);
+apiRouter.post('/auth/forgot-password/verify', verifySecurityAnswer);
+apiRouter.post('/auth/reset-password', authCtrl.resetPassword);
+
+
+
+
+// ADMIN LOGIC
+
+apiRouter.use('/admin', adminRouter);
+
+export default apiRouter;
