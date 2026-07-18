@@ -19,7 +19,7 @@ export class Product {
   name!: string;
 
   @Column({ type: 'timestamp' })
-  spoilageTime!: Date; // Used as expiration time
+  spoilageTime?: Date; // Used as expiration time
 
   @Column({ type: 'jsonb', nullable: true })
   preservationMethods?: string[];
@@ -28,7 +28,7 @@ export class Product {
   distance!: number; // Storing as float for simple sorting
 
   @Column({ type: 'float', default: 0 })
-  rating!: number; // Average rating
+  rating?: number; // Average rating
 
   @Column({ type: 'boolean', default: false })
   isProtected!: boolean; // Whether review logic is protected

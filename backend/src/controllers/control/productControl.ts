@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AppDataSource } from '../../db/datasource';
 import { Product } from '../entities/productEntity';
+import { In } from 'typeorm';
 import { Review } from '../entities/reviewEntity';
 
 export const getProducts = async (req: Request, res: Response) => {
@@ -22,8 +23,11 @@ export const getProducts = async (req: Request, res: Response) => {
 
     const products = await productRepo.find({
       order: orderQuery,
-      relations: ['reviews'],
-    });
+      relations: {
+        reviews: true,
+  
+    },
+   });
 
     res.status(200).json(products);
   } catch (error) {
@@ -33,7 +37,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const addReview = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { productId } = req.params;
+    const { productId, } = req.body as { productId: string };
     const { rating, comment } = req.body;
     
     // Extracted from JWT middleware
@@ -42,7 +46,11 @@ export const addReview = async (req: Request, res: Response): Promise<void> => {
     const productRepo = AppDataSource.getRepository(Product);
     const reviewRepo = AppDataSource.getRepository(Review);
 
-    const product = await productRepo.findOne({ where: { productId } });
+  
+  const product = await productRepo.findOne({
+  where: { productId },
+  });
+
     if (!product) {
       res.status(404).json({ error: 'Product not found' });
       return;
