@@ -13,7 +13,7 @@ import process from 'process';
 // Importing Data Source, Jobs, and Routes
 import { AppDataSource } from '././db/datasource';
 //import { startBookingStatusScheduler } from '././jobs/bookingScheduler';
-//import apiRouter from '././routes/routes';
+import apiRouter from '././routes/routes';
 
 dotenv.config();
 
@@ -56,11 +56,10 @@ if (fs.existsSync(swaggerPath)) {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
 
-// --- Routes ---
-//app.use('/', apiRouter);
+app.use('/', apiRouter);
 
 app.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'success', message: 'AutoLease API is live.' });
+  res.status(200).json({ status: 'success', message: 'farm API is live.' });
 });
 
 

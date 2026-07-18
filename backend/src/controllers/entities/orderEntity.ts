@@ -1,36 +1,38 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, OneToMany, JoinColumn } from "typeorm";
-import { User } from "./userEntity";
-import { Product } from "./productEntity";
-import { Logistic } from "./logisticEntity";
-import { Payment } from "./paymentEntity";
+import { User } from "../entity";
+import { Product } from "../entity";
+//import { Logistic } from "../entity";
+//import { Payment } from "../entity";
 
 @Entity()
 export class Order {
     @PrimaryGeneratedColumn("uuid")
-    order_id: string;
+    orderId!: string;
     
     @Column()
-    quantity_requested: number;
+    quantityRequested!: number;
 
     @Column({ default: "Not Confirmed" })
-    logistics_status: string;
+    logisticStatus?: string;
 
     @Column({ default: "Not Started" })
-    delivery_status: "Not Started" | "In Transit" | "Delivered";
+    deliveryStatus?: "Not Started" | "In Transit" | "Delivered";
 
     // Many orders belong to one listing
     @ManyToOne(() => Product, (product) => product.orders)
-    @JoinColumn({ name: "product_id" })
-    product: Product;
+    @JoinColumn({ name: "productId" })
+    product!: Product;
 
     // Many order belonging to one buyer (User)
     @ManyToOne(() => User, (user) => user.orders)
-    buyer: User;
+    buyer!: User;
 
-    @OneToOne(() => Logistic, (logistic) => logistic.order)
-    logistic: Logistic;
+    @OneToOne(() => Logistics, (logistics) => logistics.order)
+    @JoinColumn({ name: "logisticId" })
+    logistics!: Logistic;
 
     // One order can have many payment attempt retrys
     @OneToMany(() => Payment, (payment) => payment.order)
-    payments: Payment[];
+    @JoinColumn({ name: "paymentId" })
+    payments!: Payment[];
 }
