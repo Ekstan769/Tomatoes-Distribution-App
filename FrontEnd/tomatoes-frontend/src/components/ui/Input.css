@@ -1,0 +1,26 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #cbd5e0;
+}
+
+.input-field {
+  border-radius: 6px;
+  background-color: #e2e2e2;
+  color: #1a1a1a;
+  border: none;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-field:focus {
+  box-shadow: 0 0 0 2px #2d6a4f;
+}

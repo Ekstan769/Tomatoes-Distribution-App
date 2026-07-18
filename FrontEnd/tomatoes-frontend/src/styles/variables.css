@@ -1,0 +1,164 @@
+/* ==========================================================================
+   FARM2MARKET DESIGN TOKENS
+   Generated from Figma design system (Semantic Colors, Typography, Spacing, Buttons)
+   ========================================================================== */
+
+:root {
+
+  /* ------------------------------------------------------------------------
+     BRAND
+  ------------------------------------------------------------------------ */
+  --color-brand-primary: #29593C; /* B Green 60% Base */
+
+  /* ------------------------------------------------------------------------
+     TEXT
+  ------------------------------------------------------------------------ */
+  --color-text-primary: #0F151E;   /* Black 90% */
+  --color-text-secondary: #192231; /* Black 70% */
+  --color-text-disabled: #8E949D;  /* Black 30% */
+  --color-text-inverse: #FEFEFE;
+
+  /* ------------------------------------------------------------------------
+     BACKGROUND
+  ------------------------------------------------------------------------ */
+  --color-bg-default: #E8DFD8; /* Brown 10% */
+  --color-bg-surface: #D8C9BE; /* Brown 20% */
+  --color-bg-overlay: #141B27; /* Brown 80% */
+
+  /* ------------------------------------------------------------------------
+     BORDER
+  ------------------------------------------------------------------------ */
+  --color-border-default: #B4B8BE; /* Black 20% */
+  --color-border-focus: #29593C;   /* B Green 60% Base */
+
+  /* ------------------------------------------------------------------------
+     FEEDBACK
+  ------------------------------------------------------------------------ */
+  --color-feedback-success: #1F8A4C; /* Green 60% Base */
+  --color-feedback-warning: #F49F59; /* Amber 50% */
+  --color-feedback-error: #D91919;   /* Red 60% Base */
+  --color-feedback-info: #1E293B;    /* Black 50% */
+
+  /* ------------------------------------------------------------------------
+     TYPOGRAPHY - FONT FAMILIES
+  ------------------------------------------------------------------------ */
+  --font-family-heading: 'Poppins', sans-serif;
+  --font-family-body: 'Inter', sans-serif;
+
+  /* TYPOGRAPHY - SIZE / WEIGHT / LINE-HEIGHT TOKENS */
+
+  /* Display — App name */
+  --font-display-size: 32px;
+  --font-display-weight: 700;
+  --font-display-line-height: 38px;
+  --font-display-family: var(--font-family-heading);
+
+  /* Heading 1 — Main screen titles */
+  --font-h1-size: 24px;
+  --font-h1-weight: 700;
+  --font-h1-line-height: 30px;
+  --font-h1-family: var(--font-family-heading);
+
+  /* Heading 2 — Section label */
+  --font-h2-size: 20px;
+  --font-h2-weight: 700;
+  --font-h2-line-height: 26px;
+  --font-h2-family: var(--font-family-heading);
+
+  /* Heading 3 — Card titles */
+  --font-h3-size: 18px;
+  --font-h3-weight: 600;
+  --font-h3-line-height: 24px;
+  --font-h3-family: var(--font-family-heading);
+
+  /* Body Large — Profile description */
+  --font-body-lg-size: 16px;
+  --font-body-lg-weight: 400;
+  --font-body-lg-line-height: 22px;
+  --font-body-lg-family: var(--font-family-body);
+
+  /* Label — Button label */
+  --font-label-size: 14px;
+  --font-label-weight: 500;
+  --font-label-line-height: 20px;
+  --font-label-family: var(--font-family-body);
+
+  /* Body — Default text */
+  --font-body-size: 14px;
+  --font-body-weight: 400;
+  --font-body-line-height: 20px;
+  --font-body-family: var(--font-family-body);
+
+  /* Body Small — Secondary information */
+  --font-body-sm-size: 12px;
+  --font-body-sm-weight: 400;
+  --font-body-sm-line-height: 18px;
+  --font-body-sm-family: var(--font-family-body);
+
+  /* Overline — Uppercase labels */
+  --font-overline-size: 12px;
+  --font-overline-weight: 700;
+  --font-overline-line-height: 18px;
+  --font-overline-family: var(--font-family-body);
+  --font-overline-transform: uppercase;
+
+  /* Mono — Labels */
+  --font-mono-size: 12px;
+  --font-mono-weight: 400;
+  --font-mono-line-height: 18px;
+  --font-mono-family: var(--font-family-body);
+
+  /* ------------------------------------------------------------------------
+     SPACING SCALE (4px base increment)
+  ------------------------------------------------------------------------ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-11: 44px;
+  --space-12: 48px;
+  --space-13: 52px;
+  --space-14: 56px;
+  --space-15: 60px;
+  --space-16: 64px;
+
+  /* ------------------------------------------------------------------------
+     BUTTONS
+  ------------------------------------------------------------------------ */
+  --button-radius: 999px; /* fully rounded / pill shape */
+  --button-padding-y: var(--space-3);
+  --button-padding-x: var(--space-6);
+  --button-gap: var(--space-2); /* space between label and icon */
+
+  /* Primary button */
+  --button-primary-bg: var(--color-brand-primary);
+  --button-primary-text: var(--color-text-inverse);
+  --button-primary-hover-bg: #1F4530; /* darker shade for hover state */
+
+  /* Outline button */
+  --button-outline-bg: transparent;
+  --button-outline-border: var(--color-brand-primary);
+  --button-outline-text: var(--color-brand-primary);
+
+  /* Disabled button */
+  --button-disabled-bg: var(--color-text-disabled);
+  --button-disabled-text: var(--color-bg-default);
+
+  /* Text-only button (no fill/border) */
+  --button-text-only-color: var(--color-brand-primary);
+
+  /* Danger / destructive button */
+  --button-danger-bg: var(--color-feedback-error);
+  --button-danger-text: var(--color-text-inverse);
+
+  /* Warning button */
+  --button-warning-bg: var(--color-feedback-warning);
+  --button-warning-text: var(--color-text-inverse);
+
+}
