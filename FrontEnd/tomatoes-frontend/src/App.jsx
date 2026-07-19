@@ -1,5 +1,5 @@
 import React from 'react';
-// import Settings from './pages/Settings';
+import Settings from './pages/Settings';
 import './App.css';
 
 function App() {
