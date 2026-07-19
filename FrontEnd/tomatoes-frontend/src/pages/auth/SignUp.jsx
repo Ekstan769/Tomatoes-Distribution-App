@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
+import GoogleButton from "../../components/ui/GoogleButton";
+import Divider from "../../components/ui/Divider";
 import "./AuthForm.css";
+
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get("role"); // "this is for the farmer and the buyer"
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,7 +35,6 @@ export default function SignUp() {
     e.preventDefault();
     setError("");
 
-    // Basic validation
     if (
       !formData.name ||
       !formData.phoneNumber ||
@@ -134,6 +138,9 @@ export default function SignUp() {
           {loading ? "SIGNING UP..." : "SIGN UP"}
         </Button>
       </form>
+
+      <Divider text="OR" />
+      <GoogleButton />
 
       <p className="auth-switch">
         Already have an account? <Link to="/login">Login</Link>

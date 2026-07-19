@@ -2,17 +2,17 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
+import GoogleButton from "../../components/ui/GoogleButton";
+import Divider from "../../components/ui/Divider";
 import "./AuthForm.css";
 
 export default function Login() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     phoneNumber: "",
     password: "",
     confirmPassword: "",
   });
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -78,6 +78,13 @@ export default function Login() {
           {loading ? "LOGGING IN..." : "LOGIN"}
         </Button>
       </form>
+
+      <Divider text="OR" />
+      <GoogleButton />
+
+      <Link to="/forgot-password" className="forget-password-btn">
+        FORGET PASSWORD?
+      </Link>
 
       <p className="auth-switch">
         Don't have an account? <Link to="/signup">Sign Up</Link>

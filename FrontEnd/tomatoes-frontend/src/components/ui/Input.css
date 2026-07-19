@@ -8,12 +8,12 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #cbd5e0;
+  color: #1a1a1a;
 }
 
 .input-field {
   border-radius: 6px;
-  background-color: #e2e2e2;
+  background-color: #e5e5e5;
   color: #1a1a1a;
   border: none;
   padding: 10px 12px;
@@ -22,5 +22,5 @@
 }
 
 .input-field:focus {
-  box-shadow: 0 0 0 2px #2d6a4f;
+  box-shadow: 0 0 0 2px #1b4332;
 }

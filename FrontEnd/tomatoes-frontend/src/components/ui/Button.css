@@ -32,3 +32,10 @@
   background-color: #1b4332;
   color: #ffffff;
 }
+.btn-buyer {
+  background-color: #e8823a;
+  color: #ffffff;
+}
+.btn-buyer:hover:not(:disabled) {
+  background-color: #d4712c;
+}
