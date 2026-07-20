@@ -1,16 +1,13 @@
-//EXPECTED STRUCTURE PLS CHANGE APPROPRIATELY
 import { 
   Entity, 
   PrimaryGeneratedColumn, 
   Column, 
   OneToMany,
-  OneToOne,
-  Index
+  OneToOne
 } from 'typeorm';
-import "reflect-metaData"
 import { Product } from '../entity';
 import { Wallet } from '../entity';
-//import { Order } from '../entity';
+import { Order } from '../entity';
 import { Review } from '../entity';
 
 export enum UserRole {
@@ -19,73 +16,68 @@ export enum UserRole {
   FARMER = 'FARMER'
 }
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn("uuid")
-  userId!: string;
+  id!: string; // Consolidated into a single primary key
 
-  @Column({type: 'enum', enum: UserRole, default: UserRole.BUYER })
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.BUYER })
   role!: UserRole;
 
   @Column({ type: 'varchar', nullable: true })
   businessName?: string;
 
-  @Column({type: 'varchar'})
+  @Column({ type: 'varchar' })
   userName!: string;
 
-  @Index({ unique: true })
-  @Column({ type: 'varchar', unique: true })
-  phoneNumber!: string;
-  
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  phoneNumber?: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, select: false })
   securityQuestion?: string;
 
- 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, select: false })
   securityAnswer?: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, select: false })
   password?: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'boolean', default: false })
+  isComplete!: boolean; // New column to track if onboarding is done
+
+  // Storing as a simple-array translates to a text column split by commas in SQL
+  @Column({ type: 'simple-array', nullable: true })
   location?: string[];
   
-  @Column({ type: 'varchar',nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   address?: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, unique: true })
   email?: string;
   
-  @Column({type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   profilePic?: string;
   
   @OneToOne(() => Wallet, (wallet) => wallet.user)
   wallet?: Wallet;
 
-
-  // Farmer- only payout fields - nullable for Buyer
-  @Column({ type: 'varchar',nullable: true })
+  // Farmer-only payout fields - nullable for Buyer
+  @Column({ type: 'varchar', nullable: true })
   accountNumber?: string;
   
-  @Column({ type: 'varchar',nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   accountName?: string;
   
   @Column({ type: 'varchar', nullable: true })
   bankName?: string;
-  
-  
 
-  //One farmer creates many products
-  @OneToMany(() => Product, (product) => product)
+  // Corrected relations pointing to their inverse properties
+  @OneToMany(() => Product, (product) => product.farmer)
   products?: Product[];
   
-  //One buyer places many products
-  //@OneToMany(() => Order, (order) => order)
-  //orders?: Order[];
+  @OneToMany(() => Order, (order) => order.buyer)
+  orders?: Order[];
   
-  //One user writes many reviews
-  @OneToMany(() => Review, (review) => review)
+  @OneToMany(() => Review, (review) => review.author)
   reviews?: Review[];
-
 }

@@ -3,78 +3,71 @@ import jwt from "jsonwebtoken";
 import { AppDataSource } from "../db/datasource";
 import * as entity from "../controllers/entity";
 import bcrypt from "bcrypt";
-//import { logger } from '../utils/logger';
 
-
- // Extending Express Request type to include 'user'
- declare global {
-   namespace Express {
-     interface Request {
-       user?: {
-        userId: string; 
-        phoneNumber: string;
+// Extending Express Request type to include 'user' using 'id'
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string; 
+        phoneNumber: string; // Holds the phone string, or an empty string fallback for OAuth onboarding
         role: string;
-       };
-     }
-   }
- } // Fixed missing closing brackets for namespace and declare global
+      };
+    }
+  }
+}
  
- export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
-   const authHeader = req.headers.authorization;
+export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
  
-   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-     return res.status(401).json({ message: "No token provided" });
-   }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "No token provided" });
+  }
  
-   const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1];
  
-   try {
-     
-     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
+  try {
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ message: "Auth secret missing on server" });
+    }
 
-     const userRepo = AppDataSource.getRepository(entity.User);
-     
-     // Removed duplicate database calls and variable declarations here
-     const found = await userRepo.findOne({ where: { userId: decoded.userId } });
-     if (!found) {
-       return res.status(401).json({ message: "User no longer exists" });
-     }
+    // Decode using 'id' instead of 'userId'
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };
 
-    // Sanitize and attach user info
-    req.user = { userId: found.userId, phoneNumber: found.phoneNumber, role: found.role };
+    const userRepo = AppDataSource.getRepository(entity.User);
+    
+    // Querying with the consolidated primary key 'id'
+    const found = await userRepo.findOne({ where: { id: decoded.id } as any });
+    if (!found) {
+      return res.status(401).json({ message: "User no longer exists" });
+    }
+
+    // Sanitize and attach user info. Fallback to empty string if phoneNumber is null (OAuth onboarding)
+    req.user = { 
+      id: found.id, 
+      phoneNumber: found.phoneNumber || "", 
+      role: found.role 
+    };
     next();
 
-   } catch (e: any) {
-     if (e.name === "TokenExpiredError") {
-       return res.status(401).json({ message: "Token expired, please login again" });
-     }
-     if (e.name === "JsonWebTokenError") {
-       return res.status(401).json({ message: "Invalid token" });
-     }
-     return res.status(401).json({ message: "Unauthorized" });
-   }
- };
+  } catch (e: any) {
+    if (e.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expired, please login again" });
+    }
+    if (e.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+};
  
- export const authorizeRoles = (...roles: string[]) => {
-   return async (req: Request, res: Response, next: NextFunction) => {
-     // Safety check for user existence
-     if (!req.user || !roles.includes(req.user.role)) {
+export const authorizeRoles = (...roles: string[]) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    // Safety check for user existence and permissions
+    if (!req.user || !roles.includes(req.user.role)) {
       try {
-        
-       // const logRepo = AppDataSource.getRepository(entity.LogActivity);
-        /*await logRepo.save({
-          action: "FORBIDDEN_ACCESS",
-          userId: req.user?.userId || null,
-          ipAddress: req.ip || "",
-          metaData: {
-            method: req.method,
-            path: req.originalUrl,
-            role: req.user?.role,
-            allowedRoles: roles
-          }
-        });*/
+        // Optional Activity Logging can be safely handled here
       } catch (logError) {
-        // Fail safe to avoid blocking the response flow if logging fails
         console.error("Failed to write access log:", logError);
       }
 
@@ -88,11 +81,17 @@ export const verifySecurityAnswer = async (req: Request, res: Response) => {
   const { phoneNumber, securityAnswer } = req.body;
 
   try {
+    if (!phoneNumber || !securityAnswer) {
+      return res.status(400).json({ message: "Phone number and security answer are required" });
+    }
+
     const userRepo = AppDataSource.getRepository(entity.User);
-    const user = await userRepo.findOne({ 
-      where: { phoneNumber: phoneNumber },
-      select: { userId: true, securityAnswer: true } 
-    });
+    
+    // Using TypeORM createQueryBuilder to cleanly select the hidden securityAnswer column
+    const user = await userRepo.createQueryBuilder("user")
+      .where("user.phoneNumber = :phoneNumber", { phoneNumber })
+      .addSelect("user.securityAnswer")
+      .getOne();
 
     if (!user || !user.securityAnswer) {
       return res.status(401).json({ message: "Invalid request" });
@@ -107,14 +106,12 @@ export const verifySecurityAnswer = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Incorrect security answer" });
     }
 
-    // Return a success flag so the frontend knows it can now show the "New Password" fields
     return res.status(200).json({ 
       success: true, 
       message: "Answer verified",
-      // Optional: Generate a short-lived token here to pass to the next step
     });
   } catch (error) {
-   // logger.error({ err: error }, "Security answer verification failed");
+    console.error("Security answer verification failed:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -6,9 +6,11 @@ import { isAuthenticated,
   verifySecurityAnswer
  } from '../validators/auth'; 
 
+
 // Controllers
 import { 
-  authCtrl, 
+  authCtrl,
+  oAuthCtrl
   
 } from '../controllers/control'; 
 
@@ -22,6 +24,8 @@ const apiRouter = Router();
 
 apiRouter.post('/auth/register', authCtrl.signUp);
 apiRouter.post('/auth/login', authCtrl.signIn);
+apiRouter.post("/auth/google", oAuthCtrl.googleSignIn);
+apiRouter.post("/auth/google/complete", oAuthCtrl.completeOAuthOnboarding);
 
 // Password Recovery Flow
 apiRouter.post('/auth/forgot-password/get-question', authCtrl.getRecoveryQuestion);

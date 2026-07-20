@@ -9,6 +9,8 @@
     "start": "node dist/server.js",
     "swagger": "tsx swagger.ts",
     "migration:generate": "tsx node_modules/typeorm/cli.js migration:generate src/db/migrations/myFirst -d src/db/datasource.ts",
+    "migration:run": "tsx node_modules/typeorm/cli.js migration:run -d src/db/datasource.ts",
+    "migration:revert": "tsx node_modules/typeorm/cli.js migration:revert -d src/db/datasource.ts",
     "test": "node --loader ts-node/esm/esm src/test.ts"
   },
   "keywords": [],
@@ -33,6 +35,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-rate-limit": "^8.5.2",
+    "google-auth-library": "^10.9.0",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.11.0",

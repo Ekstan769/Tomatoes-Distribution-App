@@ -20,5 +20,7 @@ export const AppDataSource = new DataSource({
   // Convert the Entities object into an array of classes for TypeORM
   entities: entityClasses,
   
-  migrations: [],
+  migrations: [
+    'src/db/migrations/*.ts',
+  ],
 });

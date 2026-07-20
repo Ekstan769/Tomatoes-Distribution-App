@@ -3,8 +3,7 @@ import { Client } from 'pg';
 export async function ensureDatabaseExists() {
   const dbName = 'tomatoes';
   
-  // Create a connection string to the default 'postgres' system database
-  // by replacing the target DB name in your connection string with 'postgres'
+
   const targetUrl = process.env.DATABASE_URL || "";
   const systemUrl = targetUrl.substring(0, targetUrl.lastIndexOf('/') + 1) + 'postgres';
 
