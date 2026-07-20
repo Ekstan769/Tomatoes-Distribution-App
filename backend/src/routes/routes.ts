@@ -31,7 +31,7 @@ apiRouter.post("/auth/google/complete", oAuthCtrl.completeOAuthOnboarding);
 apiRouter.post('/auth/forgot-password/get-question', authCtrl.getRecoveryQuestion);
 apiRouter.post('/auth/forgot-password/verify', verifySecurityAnswer);
 apiRouter.post('/auth/reset-password', authCtrl.resetPassword);
-
+apiRouter.post('/auth/update-security-question', isAuthenticated, authCtrl.addSecurityQuestion);
 
 
 

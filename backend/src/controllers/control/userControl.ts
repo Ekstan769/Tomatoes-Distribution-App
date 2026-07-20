@@ -42,7 +42,7 @@ export const signUp = async (req: Request, res: Response) => {
     
     const savedUser = await userRepo.save(created);
     
-    // Aligned to the corrected 'id' field from our User entity update
+  
     const userPayload = { 
       id: savedUser.id, 
       userName: savedUser.userName, 
@@ -69,7 +69,7 @@ export const signUp = async (req: Request, res: Response) => {
     if (error?.code === '23505') {
       return res.status(409).json({ success: false, message: 'User already exists' });
     }
-    // Fixed: Catches all other internal variations so the connection never hangs
+    // Catches all other internal variations so the connection never hangs
     return res.status(500).json({ success: false, message: "Unexpected server error during sign up" });
   }
 };
@@ -130,15 +130,15 @@ export const signIn = async (req: Request, res: Response) => {
 };
 
 export const getRecoveryQuestion = async (req: Request, res: Response) => {
-  const { email } = req.body || {};
+  const { phoneNumber } = req.body || {};
 
   try {
-    if (!email) {
-      return res.status(400).json({ success: false, message: "Email is required" });
+    if (!phoneNumber) {
+      return res.status(400).json({ success: false, message: "Phone number is required" });
     }
 
     const userRepo = AppDataSource.getRepository(entity.User);
-    const user = await userRepo.findOne({ where: { email: email.toLowerCase().trim() } });
+    const user = await userRepo.findOne({ where: { phoneNumber } });
 
     if (!user || !user.securityQuestion) {
       return res.status(404).json({ success: false, message: "No security question configured for this user" });
@@ -155,10 +155,10 @@ export const getRecoveryQuestion = async (req: Request, res: Response) => {
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
-  const { email, securityAnswer, newPassword } = req.body || {};
+  const { phoneNumber, securityAnswer, newPassword } = req.body || {};
 
   try {
-    if (!email || !securityAnswer || !newPassword) {
+    if (!phoneNumber || !securityAnswer || !newPassword) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
@@ -166,7 +166,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     
     // Fixed: Using query builder here to securely bring hidden validation columns into range
     const user = await userRepo.createQueryBuilder("user")
-      .where("user.email = :email", { email: email.toLowerCase().trim() })
+      .where("user.phoneNumber = :phoneNumber", { phoneNumber })
       .addSelect(["user.password", "user.securityAnswer"])
       .getOne();
 
@@ -197,6 +197,47 @@ export const resetPassword = async (req: Request, res: Response) => {
     return res.status(200).json({ success: true, message: "Password reset successful" });
   } catch (error) {
     console.error("DEBUG RESET ERROR:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+export const addSecurityQuestion = async (req: Request, res: Response) => {
+  const { phoneNumber, securityQuestion, securityAnswer } = req.body || {};
+
+  try {
+   
+    if (!phoneNumber || !securityQuestion || !securityAnswer) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Phone number, security question, and answer are required" 
+      });
+    }
+
+    // 2. Locate the user in the database
+    const userRepo = AppDataSource.getRepository(entity.User);
+    const user = await userRepo.findOne({ where: { phoneNumber } });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // 3. Hash the security answer matching the signUp normalization logic
+    const salt = await bcrypt.genSalt(10);
+    const hashedAnswer = await bcrypt.hash(securityAnswer.toLowerCase().trim(), salt);
+
+   
+    user.securityQuestion = securityQuestion;
+    user.securityAnswer = hashedAnswer;
+    
+    await userRepo.save(user);
+
+    return res.status(200).json({
+      success: true,
+      message: "Security question and answer configured successfully",
+    });
+
+  } catch (error) {
+    console.error("DEBUG ADD SECURITY QUESTION ERROR:", error);
     return res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
